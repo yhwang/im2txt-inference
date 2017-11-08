@@ -1,0 +1,9 @@
+applications:
+- path: .
+  memory: 128M
+  instances: 1
+  domain: stage1.mybluemix.net
+  name: im2txt-inference
+  host: im2txt
+  disk_quota: 1024M
+  buildpack: python_buildpack
