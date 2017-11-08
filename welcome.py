@@ -1,4 +1,4 @@
-# Copyright 2015 IBM Corp. All Rights Reserved.
+# Copyright 2017 IBM Corp. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,14 @@
 
 import os
 from flask import Flask, jsonify
+from auth import requires_auth
 
 app = Flask(__name__)
 
-app.config['BASIC_AUTH_USERNAME'] = 'user'
-app.config['BASIC_AUTH_PASSWORD'] = 'time4fun'
-app.config['BASIC_AUTH_FORCE'] = True
+@app.before_request
+@requires_auth
+def before_request():
+    pass
 
 @app.route('/')
 def Welcome():
@@ -46,4 +48,4 @@ def SayHello(name):
 
 port = os.getenv('PORT', '5000')
 if __name__ == "__main__":
-	app.run(host='0.0.0.0', port=int(port))
+    app.run(host='0.0.0.0', port=int(port))
