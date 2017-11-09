@@ -35,13 +35,6 @@ a:hover {
 	text-decoration: underline;
 }
 
-.newappIcon {
-	padding-top: 10%;
-	display: block;
-	margin: 0 auto;
-	padding-bottom: 2em;
-	max-width:200px;
-}
 
 h1 {
 	font-weight: bold;
@@ -73,7 +66,6 @@ table {
 	width: 800px;
 	margin: 0 auto;
 	word-wrap: break-word;
-	padding-top:10%;
 }
 
 th {
@@ -81,7 +73,6 @@ th {
 }
 
 th, td {
-	text-align: left;
 	padding: 2px 20px;
 }
 
@@ -116,38 +107,7 @@ pre {
    padding-left:30px;
 }
 
-#loader{
-   visibility:hidden;
-}
-
-#f1_upload_form{
-   height:100px;
-}
-
-#f1_error{
-   font-family: Geneva, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-   font-weight:bold;
-   color:#FF0000;
-}
-
-#f1_ok{
-   font-family: Geneva, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-   font-weight:bold;
-   color:#00FF00;
-
-}
-
-#f1_upload_form {
-	font-family: Geneva, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	font-weight: normal;
-	color: #666666;
-}
-
-#f1_upload_process{
-   z-index:100;
+#uploading {
    visibility:hidden;
    position:absolute;
    text-align:center;
