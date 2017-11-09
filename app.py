@@ -12,54 +12,60 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os, uuid, json
+import os
 
-from flask import Flask, request, url_for, render_template, send_file
+from flask import Flask, request, render_template, send_file
 from auth import requires_auth
-from im2txt_inference import CaptionResult, im2txt_inference
+from im2txt_inference import ShowAndTellInference
 
-UPLOAD_FOLDER = '/tmp/'
-ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
+APP = Flask(__name__)
+PWD = os.path.dirname(os.path.realpath(__file__))
 
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-pwd = os.path.dirname(os.path.realpath(__file__))
+MODEL_INST = ShowAndTellInference(
+    os.path.join(PWD, 'chkpt', 'model.ckpt-1000000'),
+    os.path.join(PWD, 'chkpt', 'word_counts.txt'))
 
-im2txt_inst = im2txt_inference(os.path.join(pwd, 'chkpt', 'model.ckpt-1000000'),
-        os.path.join(pwd, 'chkpt','word_counts.txt'))
-
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
-@app.before_request
+@APP.before_request
 @requires_auth
 def before_request():
     pass
 
-@app.route('/')
+@APP.route('/')
 def index():
+    """
+    Serve the index page
+    """
     return render_template('index.html')
 
-@app.route('/image')
+@APP.route('/image')
 def image():
-    imagefile = request.args['name']
-    return send_file('/tmp/' + imagefile, mimetype='image/jpeg')
+    """
+    Serve the image request
 
-@app.route('/upload', methods=['POST'])
-def upload():
+    Retrieve the image from tmp and send back to client
+    """
+    imagefile = request.args['name']
+
+    if not imagefile:
+        return
+
+    path = os.path.join('/tmp', imagefile)
+    val = send_file(path, mimetype='image/jpeg')
+    print 'remote file:%s' % path 
+    os.remove(path)
+    return val
+
+@APP.route('/inference', methods=['POST'])
+def inference():
+    """
+    Serve the inference request
+
+    Store the image into tmp and run inference against this image
+    """
     if request.method == 'POST':
-        file = request.files['image']
-        if file and allowed_file(file.filename):
-            filename = '%s.%s' % (str(uuid.uuid4()), file.filename.rsplit('.', 1)[1])
-            fullpath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(fullpath)
-            results = im2txt_inst.inference(fullpath)
-            return """
-                <script language="javascript" type="text/javascript">window.top.window.inferenceDone('%s', '%s');</script>
-                """ % ((url_for('image') + '?name=' + filename), json.dumps(results))
+        return MODEL_INST.inference(request)
     return ''
 
-port = os.getenv('PORT', '5000')
+PORT = os.getenv('PORT', '5000')
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(port))
+    APP.run(host='0.0.0.0', port=int(PORT))

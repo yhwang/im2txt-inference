@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""
+An utility script to oncatenate checkpoint chunks
+"""
+
 import os
 
 def concat_chkp(path, checkpoint_prefix):
@@ -29,9 +33,9 @@ def concat_chkp(path, checkpoint_prefix):
             index += 1
         else:
             break
-                
+
     if not files:
-        print('no file to concat')
+        print 'no file to concat'
         return
 
     with open(target, 'wb') as target_f:

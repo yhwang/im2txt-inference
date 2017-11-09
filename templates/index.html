@@ -9,52 +9,83 @@
     <link rel="stylesheet" href="static/stylesheets/style.css">
     <script language="javascript" type="text/javascript">
       function send2Inference(){
-        document.getElementById('f1_upload_process').style.visibility = 'visible';
+        document.getElementById('uploading').style.visibility = 'visible';
         document.getElementById('uploadButton').disabled = true;
         return true;
       }
 
       function inferenceDone(filename, captions){
-          var result = '';
-          var capArray = JSON.parse(captions);
-          var resultHTML = '';
-          if (Array.isArray(capArray)) {
-            capArray.forEach(function(caption) {
-              resultHTML += caption.caption + ', p=' + caption.p + '<br/>'
-            });
-          }
-          document.getElementById('result').innerHTML = resultHTML;
-          document.getElementById('f1_upload_process').style.visibility = 'hidden';
-          document.getElementById('uploadButton').disabled = false;
-          document.getElementById('image').value = '';
-          var image = document.createElement('img');
-          image.setAttribute('height', '600');
-          image.setAttribute('width', '800');
-          image.src = filename;
-          var resultImg = document.getElementById('result_image');
-          var resultCap = document.getElementById('captions');
-          resultCap.innerHTML = '';
-          resultImg.innerHTML = '';
-          resultImg.appendChild(image);
-          return true;
+        var result = '';
+        var capArray = JSON.parse(captions);
+        var resultHTML = '';
+        document.getElementById('uploading').style.visibility = 'hidden';
+        document.getElementById('uploadButton').disabled = false;
+        document.getElementById('image').value = '';
+
+        var capTable = document.createElement('table')
+        if (Array.isArray(capArray)) {
+          capArray.forEach(function(caption) {
+            var tr = document.createElement('tr');
+            var td = document.createElement('td');
+            td.innerHTML = caption.caption;
+            tr.appendChild(td)
+            td = document.createElement('td');
+            td.innerHTML = 'p=' + caption.p;
+            tr.appendChild(td);
+            capTable.appendChild(tr);
+          });
+        }
+
+        var captionDiv = document.getElementById('captions');
+        captionDiv.innerHTML = '';
+        captionDiv.appendChild(capTable);
+
+        var image = document.createElement('img');
+        image.setAttribute('height', '600');
+        image.setAttribute('width', '800');
+        image.src = filename;
+        var resultImg = document.getElementById('result_image');
+        resultImg.innerHTML = '';
+        resultImg.appendChild(image);
+        return true;
       }
+
+      function inferenceFailed(error) {
+        document.getElementById('uploading').style.visibility = 'hidden';
+        document.getElementById('uploadButton').disabled = false;
+        document.getElementById('image').value = '';
+        document.getElementById('result_image').innerHTML = '';
+        document.getElementById('captions').innerHTML = error;
+      }
+ 
     </script>
   </head>
 
   <body>
     <table align="center">
-      <tr align="center">
-        <td>
-            <form id="uploadForm" name="uploadForm" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" target="upload_target" onsubmit="send2Inference();">
-              <input id="image" type="file" name="image">
+      <tr>
+        <th align="center">Show and Tell Model</th>
+      </tr>
+      <tr>
+        <td align="center">Upload an image file and generate the caption automatically</td>
+      </tr>
+      <tr>
+        <td align="center">
+            <form id="uploadForm" name="uploadForm" action="{{ url_for('inference') }}" method="POST"
+                enctype="multipart/form-data" target="upload_target" onsubmit="send2Inference();">
+              <input id="image" type="file" name="image" accept=".jpg,.jpeg,.png">
               <input id="uploadButton" name="uploadButton" type="submit" value="Upload">
             </form>
         </td>
-        </tr>
+      </tr>
       <tr>
-        <td>
-            <p id="f1_upload_process">Uploading...<br/><img src="/static/images/loader.gif" /><br/></p>
-            <p id="result"></p>
+        <td align="center">
+            <div id="uploading">
+              <table align="center">
+                <tr><td>Uploading...</td></tr>
+                <tr><td><img src="/static/images/loader.gif" /></td></tr>
+              </table>
+            </div>
             <div id="captions"></div>
             <div id="result_image"></div>
         </td>
