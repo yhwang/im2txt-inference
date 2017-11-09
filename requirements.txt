@@ -1,2 +1,2 @@
 Flask==0.10.1
-Flask-BasicAuth
+tensorflow==1.3.0
