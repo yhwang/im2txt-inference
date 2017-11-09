@@ -99,3 +99,5 @@ ENV/
 
 # mypy
 .mypy_cache/
+.vscode/
+chkpt/model.ckpt-1000000.data-00000-of-00001

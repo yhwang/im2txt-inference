@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Image 2 Text Inference</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/stylesheets/style.css">
+    <script language="javascript" type="text/javascript">
+      function send2Inference(){
+        document.getElementById('f1_upload_process').style.visibility = 'visible';
+        document.getElementById('uploadButton').disabled = true;
+        return true;
+      }
+
+      function inferenceDone(filename, captions){
+          var result = '';
+          var capArray = JSON.parse(captions);
+          var resultHTML = '';
+          if (Array.isArray(capArray)) {
+            capArray.forEach(function(caption) {
+              resultHTML += caption.caption + ', p=' + caption.p + '<br/>'
+            });
+          }
+          document.getElementById('result').innerHTML = resultHTML;
+          document.getElementById('f1_upload_process').style.visibility = 'hidden';
+          document.getElementById('uploadButton').disabled = false;
+          document.getElementById('image').value = '';
+          var image = document.createElement('img');
+          image.setAttribute('height', '600');
+          image.setAttribute('width', '800');
+          image.src = filename;
+          var resultImg = document.getElementById('result_image');
+          var resultCap = document.getElementById('captions');
+          resultCap.innerHTML = '';
+          resultImg.innerHTML = '';
+          resultImg.appendChild(image);
+          return true;
+      }
+    </script>
+  </head>
+
+  <body>
+    <table align="center">
+      <tr align="center">
+        <td>
+            <form id="uploadForm" name="uploadForm" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" target="upload_target" onsubmit="send2Inference();">
+              <input id="image" type="file" name="image">
+              <input id="uploadButton" name="uploadButton" type="submit" value="Upload">
+            </form>
+        </td>
+        </tr>
+      <tr>
+        <td>
+            <p id="f1_upload_process">Uploading...<br/><img src="/static/images/loader.gif" /><br/></p>
+            <p id="result"></p>
+            <div id="captions"></div>
+            <div id="result_image"></div>
+        </td>
+      </tr>
+    </table>
+    <iframe id="upload_target" name="upload_target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe>                 
+  </body>
+
+</html>
