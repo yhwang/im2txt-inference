@@ -79,7 +79,7 @@ class ShowAndTellInference(object):
 
             return """
                 <script language="javascript" type="text/javascript">window.top.window.inferenceDone('%s', '%s');</script>
-                """ % ((url_for('image') + '?name=' + filename), json.dumps(results))
+                """ % (url_for('image', image_file=filename), json.dumps(results))
         else:
             return """
                 <script language="javascript" type="text/javascript">window.top.window.inferenceFailed('%s');</script>

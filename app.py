@@ -37,19 +37,17 @@ def index():
     """
     return render_template('index.html')
 
-@APP.route('/image')
-def image():
+@APP.route('/image/<image_file>')
+def image(image_file):
     """
     Serve the image request
 
     Retrieve the image from tmp and send back to client
     """
-    imagefile = request.args['name']
-
-    if not imagefile:
+    if not image_file:
         return
 
-    path = os.path.join('/tmp', imagefile)
+    path = os.path.join('/tmp', image_file)
     val = send_file(path, mimetype='image/jpeg')
     print 'remote file:%s' % path 
     os.remove(path)
