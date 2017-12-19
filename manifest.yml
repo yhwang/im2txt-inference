@@ -3,7 +3,7 @@ applications:
   memory: 512M
   instances: 1
   domain: mybluemix.net
-  name: im2txt
-  host: im2txt
+  name: yourappname 
+  host: yourhostname
   disk_quota: 1024M
   buildpack: python_buildpack
