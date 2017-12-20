@@ -7,7 +7,7 @@ This application runs the show and tell pretained model and serves the inference
 1. [Install Python][]
 1. cd into this project's root directory
 1. Run `pip install -r requirements.txt` to install the app's dependencies
-1. Run `python concat_chkp.py` to oncatenate the checkpoint chunks
+1. Run `python concat_chkp.py` to concatenate the checkpoint chunks
 1. Run `python app.py`
 1. Access the running app in a browser at <http://localhost:5000>
 1. The default ID/Passwd is admin/time4fun
@@ -21,8 +21,8 @@ This application runs the show and tell pretained model and serves the inference
 1. Go to your workstation, [Install Python][]
 1. cd into this project's root directory
 1. Run `pip install -r requirements.txt` to install the app's dependencies
-1. Run `python concat_chkp.py` to oncatenate the checkpoint chunks
+1. Run `python concat_chkp.py` to concatenate the checkpoint chunks
 1. Update `manifest.yml` with your app name and host name
-1. Upload the app to IBM Cloud, as decribed in <https://console.bluemix.net/docs/starters/upload_app.html>
+1. Upload the app to IBM Cloud, as described in <https://console.bluemix.net/docs/starters/upload_app.html>
 1. Access the running app in a browser at <https://yourhostname.mybluemix.net/>
 1. The default ID/Passwd is admin/time4fun
