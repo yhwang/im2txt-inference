@@ -26,3 +26,9 @@ This application runs the show and tell pretained model and serves the inference
 1. Upload the app to IBM Cloud, as described in <https://console.bluemix.net/docs/starters/upload_app.html>
 1. Access the running app in a browser at <https://yourhostname.mybluemix.net/>
 1. The default ID/Passwd is admin/time4fun
+
+## The source code of 'Show and Tell' model
+
+The original source code of 'Show and Tell' model is from
+[here](https://github.com/tensorflow/models/tree/master/research/im2txt).
+The only modification is to change the folder into a Python module.
